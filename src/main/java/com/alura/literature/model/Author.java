@@ -9,11 +9,15 @@ import java.util.List;
 public class Author {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="author_id")
     private Long Id;
-    @Column(name="name", nullable = false)
+
+    @Column(nullable = false)
     private String name;
+
     private int birthYear;
     private int deathYear;
+
     @ManyToMany(mappedBy = "authors")
     private List<Book> books;
 
@@ -25,37 +29,25 @@ public class Author {
         this.deathYear = deathYear;
     }
 
-    public String getName() {
-        return name;
-    }
+    public String getName() { return name; }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    public void setName(String name) { this.name = name; }
 
-    public int getBirthYear() {
-        return birthYear;
-    }
+    public int getBirthYear() { return birthYear; }
 
-    public void setBirthYear(int birthYear) {
-        this.birthYear = birthYear;
-    }
+    public void setBirthYear(int birthYear) { this.birthYear = birthYear; }
 
-    public int getDeathYear() {
-        return deathYear;
-    }
+    public int getDeathYear() { return deathYear; }
 
-    public void setDeathYear(int deathYear) {
-        this.deathYear = deathYear;
-    }
+    public void setDeathYear(int deathYear) { this.deathYear = deathYear; }
 
     @Override
     public String toString(){
         final StringBuilder str = new StringBuilder(50);
         str
-                .append("\tAuthor: ").append(name).append("\n")
-                .append("\tBirth Year: ").append(birthYear).append("\n")
-                .append("\tDeath Year").append(deathYear);
+                .append("\t\tAuthor name: ").append(name).append("\n")
+                .append("\t\tBirth Year: ").append(birthYear).append("\n")
+                .append("\t\tDeath Year").append(deathYear).append("\n");
         return str.toString();
     }
 }

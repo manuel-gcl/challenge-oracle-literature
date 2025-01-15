@@ -71,13 +71,16 @@ public enum Genre {
     }
 
     public static List<Genre> filterAndGetGenresFromStrings(List<String> bookshelves) {
+        final String BROWSING_PATTERN = "Browsing: ";
         List<String> stringGenres = new ArrayList<>();
         List<Genre> returnGenres = new ArrayList<>();
-
+        System.out.println("bookshelves");
+        System.out.println(bookshelves);
         for (String item : bookshelves) {
-            if (!item.startsWith("Browsing:")) {
-                stringGenres.addAll(Arrays.asList(item.split("/")));
+            if (item.startsWith(BROWSING_PATTERN)){
+                item = item.replace(BROWSING_PATTERN, "");
             }
+            stringGenres.addAll(Arrays.asList(item.split("/")));
         }
 
         for (String genre : stringGenres) {

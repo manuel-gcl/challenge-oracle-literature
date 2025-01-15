@@ -1,17 +1,16 @@
 package com.alura.literature.main;
 
-import com.alura.literature.model.AuthorData;
-import com.alura.literature.model.Book;
-import com.alura.literature.model.BookData;
-import com.alura.literature.model.ResultsData;
+import com.alura.literature.model.*;
 import com.alura.literature.processing.InputHandler;
 import com.alura.literature.processing.UserChoice;
+import com.alura.literature.repository.AuthorRepository;
 import com.alura.literature.repository.BookRepository;
 import com.alura.literature.services.ApiConsumption;
 import com.alura.literature.services.DataConverter;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,13 +26,17 @@ public class Main {
     private final static String LANGUAGE_ID = "languages";
     private final static String SUBJECT_ID = "genre";
     private final DataConverter converter = new DataConverter();
-    private BookRepository repository;
+    private final BookRepository bookRepository;
+    private final AuthorRepository authorRepository;
     InputHandler inputHandler = new InputHandler();
     private Optional<Book> searchedBook;
+    private List<Book> books;
+    private List<Author> authors;
 
 
-    public Main(BookRepository repository) {
-        this.repository = repository;
+    public Main(BookRepository bookRepository, AuthorRepository authorRepository) {
+        this.bookRepository = bookRepository;
+        this.authorRepository = authorRepository;
     }
 
     ApiConsumption apiConsumption = new ApiConsumption();
@@ -61,7 +64,18 @@ public class Main {
             switch (userChoice) {
                 case SEARCH_BOOK:
                     searchBook(inputHandler.getInputBookName());
-//                    request = TITLE_ID;
+                    break;
+                case SEARCH_AUTHOR:
+                    searchAuthor(inputHandler.getInputAuthorName());
+                    break;
+                case LIST_BOOKS:
+                    listBooks();
+                    break;
+                case LIST_AUTHORS:
+                    listAuthors(false);
+                    break;
+                case LIST_AUTHORS_BY_YEAR:
+                    listAuthors(true);
                     break;
 //                case UserChoice.SEARCH_AUTHOR:
 //                    url_request += SEARCH_URL + inputHandler.getInputAuthorName();
@@ -106,7 +120,7 @@ public class Main {
     }
 
     public void searchBook(String bookName) {
-        searchedBook = repository.findByTitleContainsIgnoreCase(bookName);
+        searchedBook = bookRepository.findByTitleContainsIgnoreCase(bookName);
 
         if (searchedBook.isPresent()){
             System.out.println("Book match founded in DB");
@@ -119,8 +133,39 @@ public class Main {
             System.out.println("Possible matches founded in DB ....");
             System.out.println("Trying to save books:");
             bookList.forEach(System.out::println);
-            bookList.forEach(b -> repository.save(b));
+            bookList.forEach(bookRepository::save);
         }
+    }
+
+    public void searchAuthor(String authorName){
+        Optional<List<Author>> searchedAuthor = authorRepository.findByNameContainsIgnoreCase(authorName);
+        if (searchedAuthor.isPresent()){
+            searchedAuthor.get().stream()
+                    .sorted(Comparator.comparing(Author::getName));
+            System.out.println(searchedAuthor);
+        } else {
+            System.out.println("No author available with that name");
+        }
+    }
+
+    public void listBooks(){
+        books = bookRepository.findAllWithAuthors();
+        System.out.println(books);
+        books.stream()
+                .sorted(Comparator.comparing(Book::getTitle));
+        System.out.println(books);
+    }
+
+    public void listAuthors(Boolean orderByYear){
+        List<Author> authors = authorRepository.findAll();
+        if (orderByYear) {
+            authors.stream()
+                    .sorted(Comparator.comparing(Author::getBirthYear));
+        } else {
+            authors.stream()
+                    .sorted(Comparator.comparing(Author::getName));
+        }
+        System.out.println(authors);
     }
 
 }

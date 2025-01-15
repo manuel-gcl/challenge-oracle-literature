@@ -8,20 +8,22 @@ public class InputHandler {
 
     public UserChoice getUserChoice() {
         final String errorMessage = "Invalid Input\nChoice must be a number in [1, 6] range";
-        UserChoice userChoice = null;
-
-        while (userChoice == null) {
-            System.out.println("""
+        System.out.println("""
 					********************************
 					Please select an option:
 					1. Search book
-					2. Search author
-					3. Search author by date
-					4. Filter books by language
-					5. Search book by topic
-					6. Exit
+                    2. Search author
+					3. List available books
+					4. List available authors by name
+					5. List available authors by birth year
+					6. Filter books by language
+					7. Filter books by genre
+					0. Exit
 					********************************
 					""");
+        UserChoice userChoice = null;
+
+        while (userChoice == null) {
             try {
                 final int userInput = inputScanner.nextInt();
                 inputScanner.nextLine();
@@ -33,16 +35,19 @@ public class InputHandler {
                         userChoice = UserChoice.SEARCH_AUTHOR;
                         break;
                     case 3:
-                        userChoice = UserChoice.SEARCH_AUTHOR_BY_DATE;
+                        userChoice = UserChoice.LIST_BOOKS;
                         break;
                     case 4:
-                        userChoice = UserChoice.SEARCH_BOOKS_BY_LANGUAGE;
+                        userChoice = UserChoice.LIST_AUTHORS;
                         break;
                     case 5:
-                        userChoice = UserChoice.SEARCH_BOOK_BY_TOPIC;
+                        userChoice = UserChoice.LIST_AUTHORS_BY_YEAR;
                         break;
                     case 6:
-                        userChoice = UserChoice.EXIT;
+                        userChoice = UserChoice.FILTER_BOOKS_BY_LANGUAGE;
+                        break;
+                    case 7:
+                        userChoice = UserChoice.FILTER_BOOKS_BY_GENRE;
                         break;
                     default:
                         System.out.println(errorMessage);

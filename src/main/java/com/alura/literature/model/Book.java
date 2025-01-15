@@ -1,4 +1,6 @@
 package com.alura.literature.model;
+import com.alura.literature.model.converters.GenreListConverter;
+import com.alura.literature.model.converters.LanguageListConverter;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -9,15 +11,25 @@ import java.util.List;
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="book_id")
     private Long id;
-    @Column(unique = true, nullable = false)
+
+    @Column(nullable = false)
     private String title;
+
+    @Convert(converter = GenreListConverter.class)
     @Enumerated(EnumType.STRING)
-    private List<Genre> genre;
-    private List<String> language;
+    private List<Genre> genre = new ArrayList<>();
+
+    @Convert(converter = LanguageListConverter.class)
+    private List<String> language = new ArrayList<>();
+
+    @Column(name = "download_count")
     private Double downloadCount;
+
     private Boolean copyright;
-    @ManyToMany()
+
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name="books_authors",
             joinColumns = @JoinColumn(name="book_id"),
@@ -30,6 +42,8 @@ public class Book {
     public Book(BookData bookData) {
         this.title = bookData.title();
         this.language = bookData.languages();
+        this.downloadCount = bookData.downloadCount() != null ? bookData.downloadCount() : 0;
+
         if (!bookData.genre().isEmpty()) {
             this.genre = Genre.filterAndGetGenresFromStrings(bookData.genre());
         }
@@ -38,6 +52,7 @@ public class Book {
                 this.authors.add(new Author(a.name(), a.birth_year(), a.death_year()));
             });
         }
+        this.copyright = bookData.copyright();
     }
 
     public Long getId() {
@@ -99,13 +114,13 @@ public class Book {
     @Override
     public String toString() {
         StringBuilder str = new StringBuilder();
-        str.append("Book:\n\tTitle:").append(title).append("\n")
-                .append("\tId:").append(id).append("\n")
-                .append("\tAuthors:").append(authors).append("\n")
-                .append("\tGenre:").append(genre).append("\n")
-                .append("\tLanguage:").append(language).append("\n")
-                .append("\tDownloads Count:").append(downloadCount).append("\n")
-                .append("\tCopyrights:").append(copyright).append("\n");
+        str.append("Book ").append(id).append(":\n")
+                .append("\tTitle: ").append(title).append("\n")
+                .append("\tAuthors: \n").append(authors).append("\n")
+                .append("\tGenre: ").append(genre).append("\n")
+                .append("\tLanguage: ").append(language).append("\n")
+                .append("\tDownloads Count: ").append(downloadCount).append("\n")
+                .append("\tCopyrights: ").append(copyright).append("\n");
 
         return str.toString();
     }
