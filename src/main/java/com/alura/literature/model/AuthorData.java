@@ -1,4 +1,5 @@
 package com.alura.literature.model;
+
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 

@@ -1,7 +1,9 @@
 package com.alura.literature.model;
-import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record BookData(
@@ -11,5 +13,5 @@ public record BookData(
         @JsonAlias("bookshelves") List<String> genre,
         @JsonAlias("download_count") Double downloadCount,
         @JsonAlias("copyright") Boolean copyright
-    ) {
+) {
 }

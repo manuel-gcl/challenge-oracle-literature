@@ -5,14 +5,14 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name="authors")
+@Table(name = "authors")
 public class Author {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="author_id")
+    @Column(name = "author_id")
     private Long Id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String name;
 
     private int birthYear;
@@ -21,33 +21,59 @@ public class Author {
     @ManyToMany(mappedBy = "authors")
     private List<Book> books;
 
-    public Author(){}
+    public Author() {
+    }
 
-    public Author(String name, int birthYear, int deathYear){
+    public Author(String name, int birthYear, int deathYear) {
         this.name = name;
         this.birthYear = birthYear;
         this.deathYear = deathYear;
     }
 
-    public String getName() { return name; }
+    public Long getId() {
+        return Id;
+    }
 
-    public void setName(String name) { this.name = name; }
+    public void setId(Long id) {
+        Id = id;
+    }
 
-    public int getBirthYear() { return birthYear; }
+    public List<Book> getBooks() {
+        return books;
+    }
 
-    public void setBirthYear(int birthYear) { this.birthYear = birthYear; }
+    public void setBooks(List<Book> books) {
+        this.books = books;
+    }
 
-    public int getDeathYear() { return deathYear; }
+    public String getName() {
+        return name;
+    }
 
-    public void setDeathYear(int deathYear) { this.deathYear = deathYear; }
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getBirthYear() {
+        return birthYear;
+    }
+
+    public void setBirthYear(int birthYear) {
+        this.birthYear = birthYear;
+    }
+
+    public int getDeathYear() {
+        return deathYear;
+    }
+
+    public void setDeathYear(int deathYear) {
+        this.deathYear = deathYear;
+    }
 
     @Override
-    public String toString(){
-        final StringBuilder str = new StringBuilder(50);
-        str
-                .append("\t\tAuthor name: ").append(name).append("\n")
-                .append("\t\tBirth Year: ").append(birthYear).append("\n")
-                .append("\t\tDeath Year").append(deathYear).append("\n");
-        return str.toString();
+    public String toString() {
+        return "\t\tAuthor name: " + name + "\n" +
+                "\t\tBirth Year: " + birthYear + "\n" +
+                "\t\tDeath Year: " + deathYear + "\n";
     }
 }

@@ -1,4 +1,5 @@
 package com.alura.literature.model;
+
 import com.alura.literature.model.converters.GenreListConverter;
 import com.alura.literature.model.converters.LanguageListConverter;
 import jakarta.persistence.*;
@@ -7,14 +8,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name="Books")
+@Table(name = "Books")
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="book_id")
+    @Column(name = "book_id")
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 500)
     private String title;
 
     @Convert(converter = GenreListConverter.class)
@@ -29,15 +30,16 @@ public class Book {
 
     private Boolean copyright;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-            name="books_authors",
-            joinColumns = @JoinColumn(name="book_id"),
-            inverseJoinColumns = @JoinColumn(name="author_id")
+            name = "books_authors",
+            joinColumns = @JoinColumn(name = "book_id"),
+            inverseJoinColumns = @JoinColumn(name = "author_id")
     )
     private List<Author> authors = new ArrayList<>();
 
-    public Book(){}
+    public Book() {
+    }
 
     public Book(BookData bookData) {
         this.title = bookData.title();
@@ -47,7 +49,7 @@ public class Book {
         if (!bookData.genre().isEmpty()) {
             this.genre = Genre.filterAndGetGenresFromStrings(bookData.genre());
         }
-        if (!bookData.authors().isEmpty()){
+        if (!bookData.authors().isEmpty()) {
             bookData.authors().forEach(a -> {
                 this.authors.add(new Author(a.name(), a.birth_year(), a.death_year()));
             });
@@ -60,7 +62,7 @@ public class Book {
     }
 
     public void setId(Long id) {
-        id = id;
+        this.id = id;
     }
 
     public String getTitle() {
@@ -113,15 +115,12 @@ public class Book {
 
     @Override
     public String toString() {
-        StringBuilder str = new StringBuilder();
-        str.append("Book ").append(id).append(":\n")
-                .append("\tTitle: ").append(title).append("\n")
-                .append("\tAuthors: \n").append(authors).append("\n")
-                .append("\tGenre: ").append(genre).append("\n")
-                .append("\tLanguage: ").append(language).append("\n")
-                .append("\tDownloads Count: ").append(downloadCount).append("\n")
-                .append("\tCopyrights: ").append(copyright).append("\n");
-
-        return str.toString();
+        return "Book " + id + ":\n" +
+                "\tTitle: " + title + "\n" +
+                "\tAuthors: \n" + authors + "\n" +
+                "\tGenre: " + genre + "\n" +
+                "\tLanguage: " + language + "\n" +
+                "\tDownloads Count: " + downloadCount + "\n" +
+                "\tCopyrights: " + copyright + "\n";
     }
 }

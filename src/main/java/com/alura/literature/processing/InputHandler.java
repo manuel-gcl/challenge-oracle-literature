@@ -7,20 +7,21 @@ public class InputHandler {
     private final Scanner inputScanner = new Scanner(System.in);
 
     public UserChoice getUserChoice() {
-        final String errorMessage = "Invalid Input\nChoice must be a number in [1, 6] range";
+        final String errorMessage = "Invalid Input\nChoice must be a number in [0, 7] range";
         System.out.println("""
-					********************************
-					Please select an option:
-					1. Search book
-                    2. Search author
-					3. List available books
-					4. List available authors by name
-					5. List available authors by birth year
-					6. Filter books by language
-					7. Filter books by genre
-					0. Exit
-					********************************
-					""");
+                ********************************
+                Please select an option:
+                1. Search book
+                2. Search author
+                3. List available books
+                4. List available authors by name
+                5. List available authors by birth year
+                6. Filter books by language
+                7. Filter books by genre
+                8. Filter books before author birth year
+                9. Exit
+                ********************************
+                """);
         UserChoice userChoice = null;
 
         while (userChoice == null) {
@@ -49,6 +50,12 @@ public class InputHandler {
                     case 7:
                         userChoice = UserChoice.FILTER_BOOKS_BY_GENRE;
                         break;
+                    case 8:
+                        userChoice = UserChoice.FILTER_BOOKS_PREVIOUS_YEAR;
+                        break;
+                    case 9:
+                        userChoice = UserChoice.EXIT;
+                        break;
                     default:
                         System.out.println(errorMessage);
                         break;
@@ -65,18 +72,18 @@ public class InputHandler {
         return inputScanner.nextLine().toLowerCase();
     }
 
-    public String getInputAuthorName(){
+    public String getInputAuthorName() {
         System.out.println("Enter author name:\n");
-        return getInputString();
+        return getInputString().replace(" ", ", ");
     }
 
-    public String getInputBookName(){
+    public String getInputBookName() {
         System.out.println("Enter book name:\n");
         return getInputString();
     }
 
-    public String getInputTopic(){
-        System.out.println("Enter book topic:\n");
+    public String getInputGenre() {
+        System.out.println("Enter book genre:\n");
         return getInputString();
     }
 
@@ -94,12 +101,12 @@ public class InputHandler {
         }
     }
 
-    public String getBookLanguage(){
+    public String getBookLanguage() {
         String bookLanguage;
         while (true) {
             System.out.println("Input 2 or 3 letter code for language:\n");
             bookLanguage = inputScanner.nextLine();
-            if (!bookLanguage.isEmpty() && bookLanguage.length() < 4){
+            if (!bookLanguage.isEmpty() && bookLanguage.length() < 4) {
                 return bookLanguage.toUpperCase();
             }
         }

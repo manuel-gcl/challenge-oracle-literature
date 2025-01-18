@@ -43,26 +43,18 @@ public enum Genre {
     FICTION("Fiction", "Ficción"),
     UNKNOWN("Unknonw", "Desconocido");
 
-    private final String ombdEnglishGenre;
+    private final String omdbEnglishGenre;
     private final String omdbSpanishGenre;
 
 
-    Genre(String ombdGenre, String omdbSpanishGenre) {
-        this.ombdEnglishGenre = ombdGenre;
+    Genre(String omdbEnglishGenre, String omdbSpanishGenre) {
+        this.omdbEnglishGenre = omdbEnglishGenre;
         this.omdbSpanishGenre = omdbSpanishGenre;
-    }
-
-    public String getOmbdEnglishGenre() {
-        return ombdEnglishGenre;
-    }
-
-    public String getOmdbSpanishGenre() {
-        return omdbSpanishGenre;
     }
 
     public static Genre fromString(String text) {
         for (Genre genre : Genre.values()) {
-            if (genre.getOmbdEnglishGenre().equalsIgnoreCase(text) ||
+            if (genre.getOmdbEnglishGenre().equalsIgnoreCase(text) ||
                     genre.getOmdbSpanishGenre().equalsIgnoreCase(text)) {
                 return genre;
             }
@@ -74,10 +66,9 @@ public enum Genre {
         final String BROWSING_PATTERN = "Browsing: ";
         List<String> stringGenres = new ArrayList<>();
         List<Genre> returnGenres = new ArrayList<>();
-        System.out.println("bookshelves");
-        System.out.println(bookshelves);
+
         for (String item : bookshelves) {
-            if (item.startsWith(BROWSING_PATTERN)){
+            if (item.startsWith(BROWSING_PATTERN)) {
                 item = item.replace(BROWSING_PATTERN, "");
             }
             stringGenres.addAll(Arrays.asList(item.split("/")));
@@ -90,55 +81,18 @@ public enum Genre {
             }
         }
 
-        if (returnGenres.isEmpty()){
+        if (returnGenres.isEmpty()) {
             returnGenres.add(UNKNOWN);
         }
 
         return returnGenres;
     }
+
+    public String getOmdbEnglishGenre() {
+        return omdbEnglishGenre;
+    }
+
+    public String getOmdbSpanishGenre() {
+        return omdbSpanishGenre;
+    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-//
-//
-//
-//
-//
-//
-//
-//    public static Genre fromString(List<String> text) {
-//        Genre retGenre;
-//        List<String> genres = filterGenresFromString(text);
-//
-//        for (Genre genre : Genre.values()) {
-//            if (genre.ombdEnglishGenre.toLowerCase().contains(text.toLowerCase())) {
-//                retGenre = genre;
-//            } else if (genre.omdbSpanishGenre.toLowerCase().contains(text.toLowerCase())) {
-//                retGenre = genre;
-//            }
-//        }
-//        System.out.println("Genre don't found in DB: '" + text + "'");
-//
-//        return retGenre;
-//    }
-//
-//    public static List<String> filterGenresFromString(List<String> bookshelves) {
-//        List<String> stringGenres = new ArrayList<>();
-//        for (String item : bookshelves) {
-//            // Verifica si el elemento contiene "Browsing"
-//            if (!item.startsWith("Browsing:")) {
-//                // Divide el elemento por "/", en caso de que haya subgéneros
-//                stringGenres.addAll(Arrays.asList(item.split("/")));
-//            }
-//        }
-//}

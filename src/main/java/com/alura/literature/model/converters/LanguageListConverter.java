@@ -2,9 +2,9 @@ package com.alura.literature.model.converters;
 
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
+
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Converter
 public class LanguageListConverter implements AttributeConverter<List<String>, String> {
@@ -13,7 +13,7 @@ public class LanguageListConverter implements AttributeConverter<List<String>, S
         if (strings == null || strings.isEmpty()) {
             return null;
         }
-        return String.join(",", strings); // Join with commas
+        return String.join(",", strings);
     }
 
     @Override
@@ -21,6 +21,6 @@ public class LanguageListConverter implements AttributeConverter<List<String>, S
         if (string == null || string.isEmpty()) {
             return null;
         }
-        return Arrays.asList(string.split(",")); // Split by commas
+        return Arrays.asList(string.split(","));
     }
 }

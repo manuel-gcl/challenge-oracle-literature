@@ -16,8 +16,8 @@ public class GenreListConverter implements AttributeConverter<List<Genre>, Strin
             return null;
         }
         return genres.stream()
-                .map(Genre::name) // Convert enum to string
-                .collect(Collectors.joining(",")); // Join with commas
+                .map(Genre::name)
+                .collect(Collectors.joining(","));
     }
 
     @Override
@@ -25,8 +25,8 @@ public class GenreListConverter implements AttributeConverter<List<Genre>, Strin
         if (genreString == null || genreString.isEmpty()) {
             return null;
         }
-        return Arrays.stream(genreString.split(",")) // Split by commas
-                .map(Genre::valueOf) // Convert back to enum
+        return Arrays.stream(genreString.split(","))
+                .map(Genre::valueOf)
                 .collect(Collectors.toList());
     }
 }

@@ -12,7 +12,7 @@
 	<artifactId>literature</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>literature</name>
-	<description>Demo project for Spring Boot</description>
+	<description>Literature App project with Spring Boot</description>
 	<url/>
 	<licenses>
 		<license/>
