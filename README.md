@@ -3,7 +3,7 @@
 
 This project was developed for **Java backend specialization** from **Alura's Oracle One** program.
 The Literature App consist in a command-line Java application that allows users to search books from [Gutendex Library API](https://gutendex.com/) and store them in a local database.
-The main goal of the project was to deepen knowledge of Java programming, learn about databases, Hibernate, and Spring Boot.
+The main goal of the project was to deepen knowledge of Java programming, learn about databases, Hibernate and Spring.
 
 ## Installation and Setup
 To set up and use the Literature App, follow these steps:
@@ -27,15 +27,18 @@ sudo -u postgres psql
 CREATE DATABASE literature_DB;
 CREATE USER youruser WITH ENCRYPTED PASSWORD 'yourpass';
 GRANT ALL PRIVILEGES ON DATABASE yourdbname TO youruser;
+ALTER DATABASE yourdbname OWNER TO youruser;
 ```
 - Configure the database connection:
   After creating the database, you will need to configure the connection in the application.
   Update the database connection details in the 'application.properties' file with your information or set enviroment variables.
+```
 ********************************
 spring.datasource.url=jdbc:postgresql://${DB_HOST}/${DB_NAME}
 spring.datasource.username=${DB_USER}
 spring.datasource.password=${DB_PASSWORD}
 ********************************
+```
 3. **Configure dependencies with Maven:**
    This project uses Maven to manage dependencies and build the application.
    All dependencies are already set in pom.xml file.
