@@ -24,10 +24,10 @@ sudo -u postgres psql
 ```
 - Create database and user
 ```console
-CREATE DATABASE literature_DB;
+CREATE DATABASE literature_db;
 CREATE USER youruser WITH ENCRYPTED PASSWORD 'yourpass';
-GRANT ALL PRIVILEGES ON DATABASE yourdbname TO youruser;
-ALTER DATABASE yourdbname OWNER TO youruser;
+GRANT ALL PRIVILEGES ON DATABASE literature_db TO youruser;
+ALTER DATABASE literature_db OWNER TO youruser;
 ```
 - Configure the database connection:
   After creating the database, you will need to configure the connection in the application.
